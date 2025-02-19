@@ -1,51 +1,35 @@
-const mongoose = require('mongoose');
+const mongoose = require ('mongoose');
+const userSchema = new mongoose.Schema(
+    {
+      username: {type:String, required: true,unique:true},
+      email:{type:String, required: true, unique:true},
+      password:{type:String , required:true},   
+      role:{type:String, default:[]}
+      
+    }
+)
+const user = mongoose.model('user',userSchema);
 
-const profileSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  age: {
-    type: Number,
-    required: true,
+const profileSchema = new mongoose.Schema(
+  {
+    firstname: {type:String},
+    lastname:{type:String },
+    age:{type:Number },   
+    
+    
   }
-}, { _id: false });
+)
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    match: [/.+\@.+\..+/, 'Please fill a valid email address'],
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  roles: {
-    type: [String],
-    default: ['user'],
-    enum: ['user', 'admin', 'moderator'],
-  },
-  profile: {
-    type: profileSchema,
-    required: true,
-  },
-  lastLogin: {
-    type: Date,
-    default: Date.now,
-  },
-}, { timestamps: true });
+const profile= mongoose.model('profile',profileSchema);
 
-const User = mongoose.model('User', userSchema);
+const activity = new mongoose.Schema({
+  
+  lastLogin: { type: Date, required: true }
+})
 
-module.exports = User;
+const post = mongoose.model('activity', activity); 
+
+module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('profile', profileSchema);
+module.exports = mongoose.model('activity', activity);
+/***** */
